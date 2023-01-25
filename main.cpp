@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <string>
 #include "ArgumentManager.h"
+#include <vector>
+#include <regex>
 
 using namespace std;
 
@@ -14,7 +16,6 @@ struct node{
   int drinks;
   node *next;
 };
-
 
 class list{
   private:
@@ -66,20 +67,24 @@ class list{
       temp->age = _age;
       temp->deposit = _deposit;
       temp->drinks = _drinks;
+
+      node *cu = head;
       
       if (isEmpty()){
         head = temp;
       }
       else{
-        node *cu = head;
         while (cu->next != nullptr){
           // hopefully will handle duplicates...
+          /*
           if (cu->name == temp->name && cu->age == temp->age){
             cu->deposit = temp->deposit;
             cu->drinks = temp->drinks;
             break;
           }
-          else cu = cu->next;
+          else 
+          */
+          cu = cu->next;
         }
         cu->next = temp;
       }
@@ -88,7 +93,6 @@ class list{
 
     
 };
-
 
 void cleanInput(string &s){
   s.erase(remove(s.begin(), s.end(), ';'), s.end());
@@ -104,14 +108,43 @@ int main() {
 
     string in;
 
+    //vector<string> input;
+
+    list people;
+
     while (getline(fin, in)){
       cleanInput(in);
-      cout << in << endl;
+      //cout << in << endl;
       string name;
-      string age;
-      string deposit;
-      string drinks;
+      string age_s;
+      int age;
+      string deposit_s;
+      int deposit;
+      string drinks_s;
+      int drinks;
+      string temp;
       
+      name = in.substr(6, in.length() - 47);
+      cout << name << " ";
+      
+      temp = in.substr(in.length() - 35, in.length() - 45);
+      age_s = std::regex_replace(temp, std::regex(R"([\D])"), "");
+      age = std::stoi(age_s);
+      cout << age << " ";
+      
+      temp = in.substr(in.length() - 24, in.length() - 46);
+      deposit_s = std::regex_replace(temp, std::regex(R"([\D])"), "");
+      deposit = std::stoi(deposit_s);
+      cout << deposit << " ";
+      
+      temp = in.substr(in.length() - 3, in.length());
+      drinks_s = std::regex_replace(temp, std::regex(R"([\D])"), "");
+      drinks = std::stoi(drinks_s);
+      cout << drinks << endl;
+
+      people.append(name, age, deposit, drinks);
     }
-    
+
+    people.print();
+
   }

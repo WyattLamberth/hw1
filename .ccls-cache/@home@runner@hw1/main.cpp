@@ -19,7 +19,7 @@ struct node{
 
 class list{
   private:
-    node *head;
+    node *head = new node;
   public:
     list(){
       head = nullptr;
@@ -30,7 +30,7 @@ class list{
     }
 
     bool isEmpty(){
-      return head = nullptr;
+      return (head == nullptr);
     }
 
     int size(node *n){
@@ -44,7 +44,7 @@ class list{
       node *cu = head;
 
       while(cu->next != nullptr){
-        std::cout << "[name: " << cu->name << "; age: " << cu->age << "; deposit: " << cu->deposit << "; number of drinks: " << cu->drinks << "]";
+        std::cout << "[name: " << cu->name << "; age: " << cu->age << "; deposit: " << cu->deposit << "; number of drinks: " << cu->drinks << "]" << std::endl;
         cu = cu->next;
       }
       std::cout << std::endl;
@@ -52,41 +52,35 @@ class list{
 
     void push(string _name, int _age, int _deposit, int _drinks){
       node *temp = new node;
+      node *cu = head;
       temp->name = _name;
       temp->age = _age;
       temp->deposit = _deposit;
       temp->drinks = _drinks;
 
-      temp->next = head;
+      temp->next = cu;
       head = temp;
     }
 
     void append(string _name, int _age, int _deposit, int _drinks){
+
       node *temp = new node;
+      node *cu = new node;
+      cu = head;
+
       temp->name = _name;
       temp->age = _age;
       temp->deposit = _deposit;
       temp->drinks = _drinks;
 
-      node *cu = head;
-      
       if (isEmpty()){
         head = temp;
       }
       else{
-        while (cu->next != nullptr){
-          // hopefully will handle duplicates...
-          /*
-          if (cu->name == temp->name && cu->age == temp->age){
-            cu->deposit = temp->deposit;
-            cu->drinks = temp->drinks;
-            break;
-          }
-          else 
-          */
+        while (cu->next != nullptr)
           cu = cu->next;
-        }
-        cu->next = temp;
+
+          cu->next = temp;
       }
       
     }
@@ -107,8 +101,6 @@ int main() {
     ifstream fin("input1.txt");
 
     string in;
-
-    //vector<string> input;
 
     list people;
 

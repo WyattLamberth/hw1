@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ struct node{
 class list{
   private:
     node *head = new node;
+    node **pp = &head;
   public:
     list(){
       head = nullptr;
@@ -22,6 +24,9 @@ class list{
 
     node* top(){
       return head;
+    }
+    node** head_ref(){
+      return pp;
     }
 
     bool isEmpty(){
@@ -43,6 +48,16 @@ class list{
         cu = cu->next;
       }
       std::cout << std::endl;
+    }
+
+    void printFile(ofstream &fout){
+      node *cu = head;
+
+      while(cu->next != nullptr){
+        fout << "[name: " << cu->name << "; age: " << cu->age << "; deposit: " << cu->deposit << "; number of drinks: " << cu->drinks << "]" << std::endl;
+        cu = cu->next;
+      }
+      fout << std::endl;
     }
 
     // removes all nodes with the same name as input
@@ -239,6 +254,7 @@ class list{
       //reset cu and add normally
       cu = head;
       if (isEmpty()){
+        cout << "test head = temp" << endl;
         head = temp;
       }
       else{
@@ -303,38 +319,21 @@ class list{
       
     }
 
-    void swap(node *a, node *b){
-      node *temp = new node;
-
-      temp->name = a->name;
-      temp->age = a->age;
-      temp->deposit = a->deposit;
-      temp->drinks = a->drinks;
-
-      a->name = b->name;
-      a->age = b->age;
-      a->deposit = b->deposit;
-      a->drinks = b->drinks;
-
-      b->name = temp->name;
-      b->age = temp->age;
-      b->deposit = temp->deposit;
-      b->drinks = temp->drinks;
-      
-    }
-
     void sort(string s){
 
       if (s.find("name") != string::npos){
         node *cu = head;
         node *index = nullptr;
         node *temp = new node;
+
+        cout << "sorting by name..." << endl;
   
-        while (cu != nullptr){
+        while (cu->next != nullptr){
           index = cu->next;
-          while (index != nullptr){
+          while (index->next != nullptr){
             if (cu->name > index->name){
-              swap(cu, index);
+              swap(*cu, *index);
+              swap(cu->next, index->next);
             }
             index = index->next;
           }
@@ -346,11 +345,12 @@ class list{
         node *index = nullptr;
         node *temp = new node;
   
-        while (cu != nullptr){
+        while (cu->next != nullptr){
           index = cu->next;
-          while (index != nullptr){
+          while (index->next != nullptr){
             if (cu->age > index->age){
-              swap(cu, index);
+              swap(*cu, *index);
+              swap(cu->next, index->next);
             }
             index = index->next;
           }
@@ -362,11 +362,13 @@ class list{
         node *index = nullptr;
         node *temp = new node;
   
-        while (cu != nullptr){
+        while (cu->next != nullptr){
           index = cu->next;
-          while (index != nullptr){
+          while (index->next != nullptr){
             if (cu->deposit > index->deposit){
-              swap(cu, index);
+              swap(*cu, *index);
+              swap(cu->next, index->next);
+              print();
             }
             index = index->next;
           }
@@ -378,11 +380,12 @@ class list{
         node *index = nullptr;
         node *temp = new node;
   
-        while (cu != nullptr){
+        while (cu->next != nullptr){
           index = cu->next;
-          while (index != nullptr){
+          while (index->next != nullptr){
             if (cu->drinks > index->drinks){
-              swap(cu, index);
+              swap(*cu, *index);
+              swap(cu->next, index->next);
             }
             index = index->next;
           }
@@ -391,5 +394,7 @@ class list{
       }
       
     }
+
+  
 
 };

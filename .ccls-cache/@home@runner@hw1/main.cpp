@@ -55,7 +55,7 @@ void doCommand(string c, list &l){
     }
   }
   else if (c.find("Sort") != string::npos){
-    if (c.find("Name") != string::npos){
+    if (c.find("name") != string::npos){
       l.sort("name");
     }
     else if (c.find("age") != string::npos){
@@ -103,9 +103,15 @@ void doCommand(string c, list &l){
 }
 
 int main(int argc, char *argv[]) {
+
+    ArgumentManager am(argc, argv);
+
+    //ifstream fin(am.get("input"));
+    //ifstream cfin("command1.txt");
   
-    ifstream fin("input2.txt");
-    ifstream cfin("command2.txt");
+    ifstream fin("input1.txt");
+    ifstream cfin("command1.txt");
+    ofstream fout("output1.txt");
 
     string in;
 
@@ -120,8 +126,11 @@ int main(int argc, char *argv[]) {
     int drinks;
     string temp;
 
-    // grab/parse input file and populate linked list
-    while (getline(fin, in)){
+    bool emptyC = cfin.peek() == EOF;
+    bool emptyF = fin.peek() == EOF;
+
+    if (!emptyF){
+      while (getline(fin, in)){
       cleanInput(in);
       //cout << in << endl;
       
@@ -146,21 +155,22 @@ int main(int argc, char *argv[]) {
       people.append(name, age, deposit, drinks);
       //people.print();
     }
-
-    // last person that the loop doesnt get for some reason...
-    people.append(name, age, deposit, drinks);
-    people.print();
-
-    string command;
-    while(getline(cfin, command)){
-      fixC(command);
-      cout << command << endl;
-      doCommand(command, people);
+      people.append(name, age, deposit, drinks);
       people.print();
-    }
+      }
+    // last person that the loop doesnt get for some reason...
 
-    //people.sort("age");
-    people.print();
+    if (!emptyC){
+      string command;
+      while(getline(cfin, command)){
+        fixC(command);
+        cout << command << endl;
+        doCommand(command, people);
+        people.print();
+      }
+      doCommand(command, people);
+    }
+    people.printFile(fout);
     
 
   }

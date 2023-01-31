@@ -1,0 +1,9 @@
+[name: Jake; age: 9; deposit: 1700; number of drinks: 7]
+[name: Jake; age: 39; deposit: 5000; number of drinks: 3]
+[name: Rob; age: 4; deposit: 4000; number of drinks: 6]
+[name: Rob; age: 34; deposit: 1234; number of drinks: 1]
+[name: Ali; age: 23; deposit: 2345; number of drinks: 5]
+[name: Kate; age: 27; deposit: 3456; number of drinks: 7]
+[name: Kate; age: 27; deposit: 3456; number of drinks: 7]
+[name: Ali; age: 3; deposit: 1000; number of drinks: 9]
+

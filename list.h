@@ -1,8 +1,21 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <algorithm>
 
 using namespace std;
+
+void cleanInput(string &s){
+  s.erase(remove(s.begin(), s.end(), ';'), s.end());
+  s.erase(remove(s.begin(), s.end(), '\n'), s.end());
+  s.erase(remove(s.begin(), s.end(), '\r'), s.end());
+  s.erase(remove(s.begin(), s.end(), '['), s.end());
+  s.erase(remove(s.begin(), s.end(), ']'), s.end());
+}
+void rw(string &s){
+  s.erase(remove(s.begin(), s.end(), ' '), s.end());
+}
 
 //[name: value; age: value; deposit: value; number of drinks: value] 
 struct node{
@@ -254,7 +267,7 @@ class list{
       //reset cu and add normally
       cu = head;
       if (isEmpty()){
-        cout << "test head = temp" << endl;
+        cout << "List is empty, Pushing: "<< temp->name << endl;
         head = temp;
       }
       else{
@@ -272,12 +285,14 @@ class list{
       node *cu = new node;
       cu = head;
 
+      rw(_name);
+
       temp->name = _name;
       temp->age = _age;
       temp->deposit = _deposit;
       temp->drinks = _drinks;
 
-      cout << temp->name << endl;
+      //cout << temp->name << endl;
 
       if (!isEmpty()){
         while (cu->next != nullptr){
@@ -301,18 +316,18 @@ class list{
         push(_name, _age, _deposit, _drinks);
       }
       else if (pos > size(head_ref)){
-        cout << "test1" << endl;
+        cout << "Appending: " << temp->name << "..." << endl;
         append(_name, _age, _deposit, _drinks);
       }
       else if (pos <= 0){
-        cout << "test2" << endl;
+        cout << "Pushing: " << temp->name << "..." << endl;
         push(_name, _age, _deposit, _drinks);
       }
       else{
+        cout << "Adding at Index: " << pos << " - " << temp->name << "..." << endl;
         for (int i = 0; i < pos - 1; i++){
           cu = cu->next;
         }
-        cout << "test3" << endl;
         temp->next = cu->next;
         cu->next = temp;
       }
@@ -394,6 +409,33 @@ class list{
       }
       
     }
+
+    void removeDuplicates(node *start){
+    node *ptr1, *ptr2, *dup;
+    ptr1 = start;
+ 
+    /* Pick elements one by one */
+    while (ptr1 != NULL && ptr1->next != NULL) {
+        ptr2 = ptr1;
+ 
+        /* Compare the picked element with rest
+           of the elements */
+        while (ptr2->next != NULL) {
+            /* If duplicate then delete it */
+            if (ptr1->name == ptr2->next->name) {
+              if (ptr1->age == ptr2->next->age){
+                    /* sequence of steps is important here */
+                    dup = ptr2->next;
+                    ptr2->next = ptr2->next->next;
+                    delete (dup);
+              }
+            }
+            else /* This is tricky */
+                ptr2 = ptr2->next;
+        }
+        ptr1 = ptr1->next;
+    }
+}
 
   
 

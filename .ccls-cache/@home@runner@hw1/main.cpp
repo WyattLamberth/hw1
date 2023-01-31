@@ -9,14 +9,7 @@
 
 using namespace std;
 
-// fixing string input
-void cleanInput(string &s){
-  s.erase(remove(s.begin(), s.end(), ';'), s.end());
-  s.erase(remove(s.begin(), s.end(), '\n'), s.end());
-  s.erase(remove(s.begin(), s.end(), '\r'), s.end());
-  s.erase(remove(s.begin(), s.end(), '['), s.end());
-  s.erase(remove(s.begin(), s.end(), ']'), s.end());
-}
+// fixing command input
 void fixC(string &s){
   s.erase(remove(s.begin(), s.end(), '\n'), s.end());
   s.erase(remove(s.begin(), s.end(), '\r'), s.end());
@@ -106,12 +99,13 @@ int main(int argc, char *argv[]) {
 
     ArgumentManager am(argc, argv);
 
-    //ifstream fin(am.get("input"));
-    //ifstream cfin("command1.txt");
+    ifstream fin(am.get("input"));
+    ifstream cfin(am.get("command"));
+    ofstream fout(am.get("output"));
   
-    ifstream fin("input1.txt");
-    ifstream cfin("command1.txt");
-    ofstream fout("output1.txt");
+    //ifstream fin("input4.txt");
+    //ifstream cfin("command4.txt");
+    //ofstream fout("output4.txt");
 
     string in;
 
@@ -135,9 +129,10 @@ int main(int argc, char *argv[]) {
       //cout << in << endl;
       
       name = in.substr(6, in.length() - 47);
+      rw(name);
       //cout << name << " ";
       
-      temp = in.substr(in.length() - 35, in.length() - 45);
+      temp = in.substr(in.find("age: "), in.length() - 40);
       age_s = std::regex_replace(temp, std::regex(R"([\D])"), "");
       age = std::stoi(age_s);
       //cout << age << " ";
@@ -158,8 +153,7 @@ int main(int argc, char *argv[]) {
       people.append(name, age, deposit, drinks);
       people.print();
       }
-    // last person that the loop doesnt get for some reason...
-
+    
     if (!emptyC){
       string command;
       while(getline(cfin, command)){
@@ -168,9 +162,12 @@ int main(int argc, char *argv[]) {
         doCommand(command, people);
         people.print();
       }
+      //people.removeDuplicates(people.top());
       doCommand(command, people);
     }
     people.printFile(fout);
+    cout << "Final Linked List:" << endl;
+    people.print();
     
 
   }
